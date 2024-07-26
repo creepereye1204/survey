@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% csrf_token %}
+    {% for question in questions %}
+        <p>질문 {{ forloop.counter }} : {{ question }}</p>
+
+        {% for key, value in choices.items %}
+            <input type="radio" value={{ value }}>{{ key }}
+        {% endfor %}
+
+    {% endfor %}
+    <button type="submit">전송</button>
+</body>
+</html>
