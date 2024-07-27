@@ -5,15 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-    {% csrf_token %}
-    {% for question in questions %}
+        <form>
+        {% csrf_token %}
+        {% for question in questions %}
         <p>질문 {{ forloop.counter }} : {{ question }}</p>
-
-        {% for key, value in choices.items %}
-            <input type="radio" value={{ value }}>{{ key }}
-        {% endfor %}
-
-    {% endfor %}
-    <button type="submit">전송</button>
+            <div>
+            {% for key, value in choices.items %}
+                <input type="radio" name="question{{ forloop.parentloop.counter }}" value="{{ value }}">{{ key }}
+            {% endfor %}
+            </div>
+        
+            {% endfor %}
+        <button type="submit">전송</button>
+        </form>
 </body>
 </html>
