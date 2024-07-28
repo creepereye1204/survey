@@ -1,22 +1,32 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>도박 위험도 예측</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/survey.css' %}"> <!-- 추가된 스타일시트 -->
 </head>
 <body>
-        <form method="post">
-        {% csrf_token %}
-        {% for question in questions %}
-        <p>질문 {{ forloop.counter }} : {{ question }}</p>
-            <div>
-            {% for key, value in choices.items %}
-                <input type="radio" name="question{{ forloop.parentloop.counter }}" value="{{ value }}">{{ key }}
+    <div class="container">
+        <h1 class="text-center">도박 위험도 질문</h1>
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% for question in questions %}
+                <div class="question-container">
+                    <p class="question">{{ question }}</p>
+                    <fieldset class="choices">
+                        {% for key, value in choices.items %}
+                            <label class="choice-label">
+                                <input type="radio" name="question{{ forloop.parentloop.counter }}" value="{{ value }}">
+                                {{ key }}
+                            </label>
+                        {% endfor %}
+                    </fieldset>
+                </div>
             {% endfor %}
-            </div>
-        
-            {% endfor %}
-        <button type="submit">전송</button>
+            <button type="submit" class="btn btn-primary">예측하기</button>
         </form>
+    </div>
 </body>
 </html>

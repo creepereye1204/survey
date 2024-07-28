@@ -20,17 +20,41 @@ choices = {
 }
 
 
-def gamble_survey_result(y) -> str:
-    z: str = ''
-    if y == 0:
-        z = '비문제'
+def get_color(value: int, cnt: int) -> str:
+    red = int((value / cnt) * 255)
+    green = 255 - red
+    return f'rgb({red}, {green}, 0)'
+
+
+def gamble_survey_result(y) -> dict:
+    if y < 1e-10:
+        return {
+            '증상': '비문제',
+            '설명': '도박증 상이 없어 보입니다!',
+            '처방전': '지금 이상태를 유지하세요.',
+            '레벨': get_color(y, 3)
+        }
     elif y == 1:
-        z = '저위험도박'
+        return {
+            '증상': '저위험도박',
+            '설명': '도박을 즐기고 있으나 큰 문제가 없습니다.',
+            '처방전': '도박 시간을 제한하고, 예산을 설정하세요.',
+            '레벨': get_color(y, 3)
+        }
     elif y == 2:
-        z = '중위험도박'
-    elif y == 3:
-        z = '문제도박'
-    return z
+        return {
+            '증상': '중위험도박',
+            '설명': '도박이 일상에 약간의 영향을 미치고 있습니다.',
+            '처방전': '도박 시간을 조절하고, 전문 상담을 고려하세요.',
+            '레벨': get_color(y, 3)
+        }
+    else:
+        return {
+            '증상': '문제도박',
+            '설명': '도박이 생활에 심각한 영향을 미치고 있습니다.',
+            '처방전': '전문 상담을 받으세요. 도박을 완전히 중단하는 것이 필요합니다.',
+            '레벨': get_color(y, 3)
+        }
 
 
 def home_page(request):
@@ -43,12 +67,14 @@ def gamble_page(request):
         for i in range(len(questions)):
             answer = request.POST.get(f'question{i + 1}', None)
             if answer:
-                answers.append(answer)
+                answers.append(int(answer))
+
         x = np.array([answers])
         y = logistic_model.predict(x)
 
-        return render(request, 'result.html',
-                      {'result': gamble_survey_result(y)})
+        result = gamble_survey_result(y)
+
+        return render(request, 'result.html', {'result': result})
 
     return render(request, 'gamble.html', {
         'choices': choices,

@@ -39,7 +39,8 @@ h1 {
 
 .choice-label {
     display: block; /* 라벨을 블록으로 설정하여 줄 바꿈 */
-    margin-bottom: 8px; /* 선택지 간격 */
+    margin-bottom: 4px; /* 선택지 간격 */
+    margin-top: 4px; /* 선택지 간격 */
     cursor: pointer; /* 커서 포인터 변경 */
     font-size: 14px; /* 선택지 텍스트 크기 */
 }
@@ -62,4 +63,8 @@ h1 {
 
 .btn:hover {
     background-color: #0056b3; /* 호버 시 배경색 변경 */
+}
+h2{
+    font-weight: bolder;
+    text-align: center;
 }
