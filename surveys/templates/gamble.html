@@ -6,11 +6,12 @@
     <title>도박 위험도 예측</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/survey.css' %}"> <!-- 추가된 스타일시트 -->
+
 </head>
 <body>
     <div class="container">
         <h1 class="text-center">도박 위험도 질문</h1>
-        <form method="post" class="form">
+        <form method="post" class="form" id="form">
             {% csrf_token %}
             {% for question in questions %}
                 <div class="question-container">
@@ -25,8 +26,9 @@
                     </fieldset>
                 </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">예측하기</button>
+            <button type="submit" id="button" class="btn btn-primary">예측하기</button>
         </form>
     </div>
+<script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

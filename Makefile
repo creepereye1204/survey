@@ -12,11 +12,11 @@ lint:
 
 .PHONY: migrate
 migrate:
-	poetry run python -m core.manage migrate
+	poetry run python manage.py migrate
 
 .PHONY: migrations
 migrations:
-	poetry run python -m core.manage makemigrations
+	poetry run python manage.py makemigrations
 
 .PHONY: run-server
 run-server:
@@ -24,7 +24,7 @@ run-server:
 
 .PHONY: superuser
 superuser:
-	poetry run python -m core.manage createsuperuser
+	poetry run python manage.py createsuperuser
 
 .PHONY: up
 up:

@@ -3,6 +3,8 @@ import joblib
 import numpy as np
 from django.shortcuts import render
 
+from .models import Gamble
+
 logistic_model = joblib.load('logistic_model.pkl')
 
 questions = [
@@ -27,7 +29,7 @@ def get_color(value: int, cnt: int) -> str:
 
 
 def gamble_survey_result(y) -> dict:
-    if y < 1e-10:
+    if y == 0:
         return {
             '증상': '비문제',
             '설명': '도박증 상이 없어 보입니다!',
@@ -71,8 +73,24 @@ def gamble_page(request):
 
         x = np.array([answers])
         y = logistic_model.predict(x)
-
         result = gamble_survey_result(y)
+        data = {
+            'spending_time_on_gambling': answers[0],
+            'conflict_with_family_or_friends': answers[1],
+            'difficulty_in_work_or_school': answers[2],
+            'financial_problems_due_to_gambling': answers[3],
+            'feel_anxious_when_not_gambling': answers[4],
+            'gamble_to_recover_lost_money': answers[5],
+            'health_issues_from_gambling': answers[6],
+            'legal_issues_due_to_gambling': answers[7],
+            'difficulty_in_relationships': answers[8],
+            'result': y
+        }
+
+        try:
+            Gamble.objects.create(**data)
+        except Exception as e:
+            print("오류 발생:", e)
 
         return render(request, 'result.html', {'result': result})
 
